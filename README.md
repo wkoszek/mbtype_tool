@@ -11,7 +11,7 @@ just concatenate the file.
 
 2. Download them to ~/Downloads
 
-3. Looks at `.settings` file. The release version of the fonts is there.  Mine was `180117`. Your is probably different, so adjust it.
+3. Modify the `.settings` file. The release version of the fonts is here. Mine was `180117`. Your is probably different, so adjust it.
 
 # Quickstart
 
