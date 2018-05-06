@@ -4,7 +4,7 @@
 
 FONT_NAME=$1
 
-PREFIX=../test
+PREFIX=../${REL}
 
 TMP=/tmp/___
 
