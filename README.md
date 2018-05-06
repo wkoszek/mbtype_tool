@@ -25,6 +25,9 @@ Then do:
 	./mk.rename
 	./mk.fonts
 
+If everything worked fine, try to open `example.html`. It should show you a
+sample text rendered with Matthew's Equity font.
+
 # How it works
 
 - `mk.unpack` unzips the files and moves them to a separate directory
