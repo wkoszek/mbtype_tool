@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+# vim:set tw=200:
+
+. .settings
+
+DEBUG="tee /dev/stderr"
+#DEBUG="cat"
+
+set -x
+
+# Start from directory depth 1. Remove all spaces in file names
+# at this level. Then move to depth 2 and do the same. And so on.
+# You'll end up with a directory tree where there are no spaces.
+for i in 1 2 3 4 5 6 7; do
+	echo "renaming directories at depth $i"
+	find ${REL} -type d -depth $i | rename -f --stdin 's/[+ ]+//g'
+	find ${REL} -type d -depth $i | rename -f --stdin 'y/A-Z/a-z/'
+	find ${REL} -type d -depth $i | rename -f --stdin 'y/_//'
+
+done
+
+find ${REL} -type f | rename -f --stdin 's/[+ ]+//g'
+find ${REL} -type f | rename -f --stdin 'y/A-Z/a-z/'
+find ${REL} -type f | rename -f --stdin 's/_//g'
+
+
+## Make SVG from TTF fonts.
+find ${REL} -type f -name "*.ttf" | awk -F . '{ print $1 }' | xargs -n 1 -I@ echo batik-ttf2svg @.ttf -o @.svg |$DEBUG| sh
+
+# Make EOT from OTF fonts.
+find ${REL} -type f -name "*.otf" | awk -F '.' '{print $1}' | xargs -n 1 -I@ echo "mkeot @.otf > @.eot" |$DEBUG| sh
+
+# Make WOFF2 from TTF fonts.
+find ${REL} -type f -name "*.ttf" | xargs -n 1 woff2_compress
+
+# Make dirs for each of the formats we've made above
+find ${REL} -depth 1 -type d | xargs -I@ -n1 echo mkdir @/woff2 @/eot @/svg | sh
+
+# Move the formats to their corresponding directories.
+find ${REL} -depth 1 -type d | xargs -I@ -n1 echo 'mv @/*/*.woff2 @/woff2' | sh
+find ${REL} -depth 1 -type d | xargs -I@ -n1 echo 'mv @/*/*.eot @/eot' | sh
+find ${REL} -depth 1 -type d | xargs -I@ -n1 echo 'mv @/*/*.svg @/svg' | sh

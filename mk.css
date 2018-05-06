@@ -1,0 +1,37 @@
+#!/bin/sh
+
+. .settings
+
+FONT_NAME=$1
+
+PREFIX=../test
+
+TMP=/tmp/___
+
+(cd ${REL} && find * -type f -name "${FONT_NAME}.*" | sort) | xargs > $TMP
+
+#cat $TMP
+
+read PATH_EOT PATH_OTF PATH_TTF PATH_SVG PATH_WOFF PATH_WOFF2 < $TMP
+
+#echo $PATH_EOT $PATH_OTF $PATH_TTF $PATH_SVG $PATH_WOFF $PATH_WOFF2
+
+
+cat <<EOF
+@font-face {
+	font-family:	    '${FONT_NAME}';
+	src:		url('${PREFIX}/${PATH_EOT}'); /* IE9 Compat Modes */
+	src:		url('${PREFIX}/${PATH_EOT}?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+			url('${PREFIX}/${PATH_WOFF2}') format('woff2'), /* Super Modern Browsers */
+			url('${PREFIX}/${PATH_WOFF}') format('woff'), /* Pretty Modern Browsers */
+			url('${PREFIX}/${PATH_TTF}')  format('truetype'), /* Safari, Android, iOS */
+			url('${PREFIX}/${PATH_SVG}#svgFontName') format('svg'); /* Legacy iOS */
+}
+EOF
+
+#test/advocate/eot/advocateslabc63regular.eot
+#test/advocate/opentype/advocateslabc63regular.otf
+#test/advocate/opentypett/advocateslabc63regular.ttf
+#test/advocate/svg/advocateslabc63regular.svg
+#test/advocate/woff/advocateslabc63regular.woff
+#test/advocate/woff2/advocateslabc63regular.woff2

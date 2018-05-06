@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+brew install woff2
+brew install fontforge

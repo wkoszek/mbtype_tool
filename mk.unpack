@@ -1,0 +1,7 @@
+. .settings 
+
+set -x
+
+rm -rf ${REL}
+unzip ~/Downloads/Equity_Concourse_Standard_Triplicate_Advocate_${REL}.zip
+mv Eq* ${REL}

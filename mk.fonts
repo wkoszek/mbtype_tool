@@ -1,0 +1,9 @@
+. .settings
+
+mkdir -p css
+
+find ${REL} -type f | \
+	xargs -n1 basename | \
+	awk -F . '{ print $1 }'  | \
+	sort -u | xargs -n1 -I@ echo './mk.css @ > css/@.css' | sh
+
